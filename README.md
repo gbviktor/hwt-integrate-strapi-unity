@@ -21,10 +21,11 @@ var strapi = new Strapi("http://localhost:1337","Bearer ...");
 var positionsRepository = strapi.CreateRepository<MyVector3>("api/positions");
 
 List<MyVector3> res = positionsRepository.GetAll();
-MyVector3 newPosition =positionsRepository.Create(new MyVector3(0,1,0));
+MyVector3 newPosition =positionsRepository.Add(new MyVector3(0,1,0));
+Entity<MyVector3> foundedByIdEntity = positionsRepository.GetEntity(0);
 MyVector3 foundedById = positionsRepository.Get(0);
-MyVector3 updatedEntity = positionsRepository.Update(foundedById);
-bool success = positionsRepository.Delete(updatedEntity);
+MyVector3 updated = positionsRepository.Update(foundedByIdEntity);
+bool success = positionsRepository.Delete(foundedByIdEntity);
 
 ```
 [in dev]
