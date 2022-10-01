@@ -8,6 +8,16 @@ Maybe simplest way to communicate with Strapi from Unity, go, just try it.
 ```
 https://github.com/gbviktor/hwt-integrate-strapi-unity.git
 ```
+## Setup Strapi v4.0 and above
+
+---
+> if you use a Strapi Version 4.0 and above, please install a Plugin [Transformer](https://market.strapi.io/plugins/strapi-plugin-transformer) and setup this configuration:
+> ``` js
+> //remove the attributes key from the response and shift all of its properties up one level
+> removeAttributesKey = true
+> //remove the data key from the response and shift the attribute data to be top level
+> removeDataKey = true
+> ```
 
 ## Usage
 
