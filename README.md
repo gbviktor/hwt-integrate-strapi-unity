@@ -27,9 +27,4 @@ var strapi = new Strapi("http://localhost:1337","Bearer ...");
 var promocodes = strapi.CreateRepository<MyVector3>("api/position");
 List<MyVector3> res = promocodes.GetAll();
 ```
-
-### License
-[MIT License](https://github.com/gbviktor/hwt-integrate-strapi-unity/blob/main/LICENSE.md)
-
-### Author
-[gbviktor](https://github.com/gbviktor)
+[in dev]
