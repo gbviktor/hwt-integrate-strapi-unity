@@ -18,8 +18,13 @@ https://github.com/gbviktor/hwt-integrate-strapi-unity.git
 
 var strapi = new Strapi("http://localhost:1337","Bearer ...");
 
-//api/position - is a endpoint on strapi
-var promocodes = strapi.CreateRepository<MyVector3>("api/position");
-List<MyVector3> res = promocodes.GetAll();
+var positionsRepository = strapi.CreateRepository<MyVector3>("api/positions");
+
+List<MyVector3> res = positionsRepository.GetAll();
+MyVector3 newPosition =positionsRepository.Create(new MyVector3(0,1,0));
+MyVector3 foundedById = positionsRepository.Get(0);
+MyVector3 updatedEntity = positionsRepository.Update(foundedById);
+bool success = positionsRepository.Delete(updatedEntity);
+
 ```
 [in dev]
