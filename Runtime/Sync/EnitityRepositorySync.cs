@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 
+using com.gbviktor.hwtintegratestrapiunity.core;
+
 namespace com.gbviktor.hwtintegratestrapiunity
 {
-    public class EnitityRepositorySync<T, E> where T : Entity<E> where E : IStrapiEntityType
+    public class EnitityRepositorySync<T> where T : IStrapiEntityType
     {
         IRestClientSync client;
 
@@ -10,44 +12,34 @@ namespace com.gbviktor.hwtintegratestrapiunity
         {
             this.client = client;
         }
-        public E Add(E entity)
+        public T Add(T entity)
         {
-            var res = client.AddAsync<T, E>(entity);
-            res.attributes.id = res.id;
-            return res.attributes;
+            return client.AddAsync<T>(entity);
         }
-        public E Get(int id)
+        public T Get(int id)
         {
-            var res = client.Get<T, E>(id);
-            res.attributes.id = res.id;
-            return res.attributes;
+            return client.Get<T>(id);
         }
         public T GetEntity(int id)
         {
-            var res = client.Get<T, E>(id);
+            var res = client.Get<T>(id);
             return res;
         }
-        public E Update(T entity)
+        public T Update(T entity)
         {
-            var res = client.Update<T, E>(entity);
-            return res.attributes;
+            return client.Update<T>(entity);
         }
         public bool Delete(int entity)
         {
-            return (client.Delete<T, E>(entity)).id == entity;
+            return (client.Delete<T>(entity)).id == entity;
         }
         public bool Delete(T entity)
         {
             return Delete(entity.id);
         }
-        public List<E> GetAll()
+        public List<T> GetAll()
         {
-            var res = client.GetAll<T, E>();
-            return res.ConvertAll(x =>
-            {
-                x.attributes.id = x.id;
-                return x.attributes;
-            });
+            return client.GetAll<T>();
         }
     }
 }

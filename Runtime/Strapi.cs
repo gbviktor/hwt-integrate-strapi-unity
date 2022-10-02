@@ -1,4 +1,6 @@
-﻿namespace com.gbviktor.hwtintegratestrapiunity
+﻿using com.gbviktor.hwtintegratestrapiunity.core;
+
+namespace com.gbviktor.hwtintegratestrapiunity
 {
     public class Strapi
     {
@@ -24,15 +26,25 @@
             ApplyConfigToTransport(config);
         }
 
+        public void RegisterNewUser(string email, string name, string password)
+        {
+            //api/auth/local
+            //TODO
+        }
+        public void Login(string email, string password)
+        {
+            //TODO 
+        }
+
         /// <summary>
         /// Method to create Repositories
         /// </summary>
         /// <typeparam name="T">Any type inherited of IStrapiEntityType</typeparam>
         /// <param name="endpoint">Path to endpoint after base strapiUrl setted in config</param>
         /// <returns>Repository to operate with data by calling REST Api endpoints</returns>
-        public RepositorySync<T> CreateRepository<T>(string endpoint) where T : IStrapiEntityType
+        public Repository<T> CreateRepository<T>(string endpoint) where T : IStrapiEntityType
         {
-            return new RepositorySync<T>(endpoint, transport);
+            return new Repository<T>(endpoint, transport);
         }
     }
 }

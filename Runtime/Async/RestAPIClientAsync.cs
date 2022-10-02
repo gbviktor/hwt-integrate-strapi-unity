@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
 
+using com.gbviktor.hwtintegratestrapiunity.core;
+using com.gbviktor.hwtintegratestrapiunity.strapiv4;
+
 using Cysharp.Threading.Tasks;
 
 namespace com.gbviktor.hwtintegratestrapiunity.async
 {
 
-    public class RestAPIClientAsync : IRestClientAsync
+    public class RestAPIClientAsync : BaseRestClient<RestAPITransportAsync>, IRestClientAsync
     {
-        public static RestAPITransportAsync transport;
-        string endpoint;
-
-        const string GET = "GET";
-        const string POST = "POST";
-        const string PUT = "PUT";
-        const string DELETE = "DELETE";
-
         public RestAPIClientAsync(string endpoint)
         {
             this.endpoint = endpoint;
@@ -23,7 +18,7 @@ namespace com.gbviktor.hwtintegratestrapiunity.async
         public async UniTask<T> AddAsync<T, E>(E entity) where T : IStrapiEntity<E>
         {
             var req = new StrapiBaseMessage<E>(entity);
-            var res = await transport.SendAsyncWithOtherResponce<StrapiBaseMessage<E>, StrapiBaseMessage<T>>(req, endpoint, POST);
+            var res = await transport.SendAsyncWithOtherResponse<StrapiBaseMessage<E>, StrapiBaseMessage<T>>(req, endpoint, POST);
             return res.data;
         }
 
@@ -51,7 +46,7 @@ namespace com.gbviktor.hwtintegratestrapiunity.async
         public async UniTask<T> Update<T, E>(T entity) where T : IStrapiEntity<E>
         {
             var req = new StrapiBaseMessage<E>(entity.attributes);
-            var res = await transport.SendAsyncWithOtherResponce<StrapiBaseMessage<E>, StrapiBaseMessage<T>>(req, $"{endpoint}/{entity.id}", PUT);
+            var res = await transport.SendAsyncWithOtherResponse<StrapiBaseMessage<E>, StrapiBaseMessage<T>>(req, $"{endpoint}/{entity.id}", PUT);
             return res.data;
         }
     }

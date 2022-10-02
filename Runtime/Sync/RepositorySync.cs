@@ -1,8 +1,10 @@
-﻿namespace com.gbviktor.hwtintegratestrapiunity
+﻿using com.gbviktor.hwtintegratestrapiunity.core;
+
+namespace com.gbviktor.hwtintegratestrapiunity
 {
-    public class RepositorySync<T> : EnitityRepositorySync<Entity<T>, T> where T : IStrapiEntityType
+    public class Repository<T> : EnitityRepositorySync<T> where T : IStrapiEntityType
     {
-        public RepositorySync(string endpoint, RestAPITransportSync transport) : base(new RestAPIClientSync(endpoint, transport))
+        public Repository(string endpoint, RestAPITransportSync transport) : base(new RestAPIClientSync(endpoint, transport))
         {
         }
     }

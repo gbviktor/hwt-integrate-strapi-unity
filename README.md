@@ -1,5 +1,5 @@
-# hwt-integrate-strapi-unity
-Maybe simplest way to communicate with Strapi from Unity, go, just try it.
+# hwt-integrate-strapi-unity `in development`
+Maybe simplest way to communicate with Strapi from Unity, go, just try it. 
 
 ## Install via Unity Package Manager
 
@@ -38,4 +38,3 @@ MyVector3 updated = positionsRepository.Update(foundedByIdEntity);
 bool success = positionsRepository.Delete(foundedByIdEntity);
 
 ```
-[in dev]
