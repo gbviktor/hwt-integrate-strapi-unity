@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace com.gbviktor.hwtintegratestrapiunity
+namespace com.gbviktor.hwtintegratestrapiunity.core
 {
     public interface IStrapiBaseMessage { }
 
     [System.Serializable]
     public class StrapiBaseMessage<T> : IStrapiBaseMessage
     {
-        [JsonProperty("data")] public T data;
-        [JsonProperty("error")] public string error;
+        [JsonProperty("data", NullValueHandling = NullValueHandling.Ignore)] public T data;
+        [JsonProperty("error")] public JRaw error;
 
         public StrapiBaseMessage()
         {

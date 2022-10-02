@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace com.gbviktor.hwtintegratestrapiunity
+namespace com.gbviktor.hwtintegratestrapiunity.strapiv4
 {
-    public interface IRestClientSync
+    public interface IRestClientSyncStrapiV4
     {
         T AddAsync<T, E>(E entity) where T : IStrapiEntity<E>;
         T Get<T, E>(int id);

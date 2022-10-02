@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 using Cysharp.Threading.Tasks;
 
-namespace com.gbviktor.hwtintegratestrapiunity.async
+namespace com.gbviktor.hwtintegratestrapiunity.strapiv4
 {
-
     public interface IRestClientAsync
     {
         UniTask<T> AddAsync<T, E>(E entity) where T : IStrapiEntity<E>;

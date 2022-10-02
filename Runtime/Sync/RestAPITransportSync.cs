@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Text;
+
+using com.gbviktor.hwtintegratestrapiunity.core;
 
 using Newtonsoft.Json;
 
@@ -10,42 +10,9 @@ using UnityEngine;
 
 namespace com.gbviktor.hwtintegratestrapiunity
 {
-    public class RestAPITransportSync
+    public sealed class RestAPITransportSync : BaseRestAPITransport
     {
-        const string Bearer = "Authorization";
-        const string CT = "Content-Type";
-        const string Connection = "Connection";
-        const string KeepAlive = "keep-alive";
-        const string ApplicationJson = "application/json";
-
-        public bool IsOnline { get; protected set; }
-
-        static RestAPITransportSync()
-        {
-            HttpClientHandler handler = new HttpClientHandler()
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
-            };
-            client = new HttpClient(handler);
-        }
-        public RestAPITransportSync(StrapiServerConfig config) : base()
-        {
-            this.config = config;
-        }
-
-        readonly JsonSerializer serializer = new JsonSerializer()
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-        };
-        readonly JsonSerializerSettings settings = new JsonSerializerSettings()
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-        };
-
-        public StrapiServerConfig config;
-        public static readonly HttpClient client;
+        public RestAPITransportSync(StrapiServerConfig config) : base(config) { }
 
         //GET   	/api/:pluralApiId	        Get a list of entries
         //POST  	/api/:pluralApiId           Create an entry
@@ -53,24 +20,21 @@ namespace com.gbviktor.hwtintegratestrapiunity
         //PUT   	/api/:pluralApiId/:id       Update an entry
         //DELETE	/api/:pluralApiId/:id       Delete an entry
 
-        public REQUEST_TYPE SendAsync<REQUEST_TYPE>(REQUEST_TYPE data, string endpoint, string method = default)
+        public REQUEST_TYPE Send<REQUEST_TYPE>(REQUEST_TYPE data, string endpoint, string method = default)
                      where REQUEST_TYPE : IStrapiBaseMessage
         {
-            return SendAsyncWithOtherResponce<REQUEST_TYPE, REQUEST_TYPE>(data, endpoint, method);
+            return SendWithDifferentResponseType<REQUEST_TYPE, REQUEST_TYPE>(data, endpoint, method);
         }
 
-        public RESPONSE_TYPE SendAsyncWithOtherResponce<REQUEST_TYPE, RESPONSE_TYPE>(REQUEST_TYPE data, string endpoint, string method = default)
+        public RESPONSE_TYPE SendWithDifferentResponseType<REQUEST_TYPE, RESPONSE_TYPE>(REQUEST_TYPE data, string endpoint, string method = default)
                    where REQUEST_TYPE : IStrapiBaseMessage
             where RESPONSE_TYPE : IStrapiBaseMessage
         {
             try
             {
-                client.Timeout = TimeSpan.FromSeconds(19);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add(Bearer, config.Token);
+                SetupClientHeaders();
 
                 var url = $"{config.URL}/{endpoint}";
-
 
                 HttpResponseMessage httpResponse;
 
@@ -80,12 +44,10 @@ namespace com.gbviktor.hwtintegratestrapiunity
                         httpResponse = client.GetAsync(url).Result;
                         break;
                     case "POST":
-                        httpResponse = client.PostAsync(url, new StringContent(
-                        Serialize(data), Encoding.UTF8, ApplicationJson)).Result;
+                        httpResponse = client.PostAsync(url, ToHttpContent(data)).Result;
                         break;
                     case "PUT":
-                        httpResponse = client.PutAsync(url, new StringContent(
-                        Serialize(data), Encoding.UTF8, ApplicationJson)).Result;
+                        httpResponse = client.PutAsync(url, ToHttpContent(data)).Result;
                         break;
                     case "DELETE":
                         httpResponse = client.DeleteAsync(url).Result;
@@ -101,14 +63,10 @@ namespace com.gbviktor.hwtintegratestrapiunity
 
                 var deb = httpResponse.Content.ReadAsStringAsync().Result;
                 Debug.Log($"{url}=Response=>{deb}");
-                if (httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    IsOnline = true;
-                    RESPONSE_TYPE res = serializer.Deserialize<RESPONSE_TYPE>(reader);
 
-                    Debug.Log($"Ser: {res}");
-                    return res;
-                }
+                IsOnline = true;
+
+                return serializer.Deserialize<RESPONSE_TYPE>(reader);
 
             } catch (Exception er)
             {
@@ -121,10 +79,6 @@ namespace com.gbviktor.hwtintegratestrapiunity
             }
 
             return default;
-        }
-        string Serialize<REQUEST_TYPE>(REQUEST_TYPE data) where REQUEST_TYPE : IStrapiBaseMessage
-        {
-            return JsonConvert.SerializeObject(data, settings);
         }
 
     }
