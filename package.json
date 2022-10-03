@@ -6,9 +6,18 @@
     "url": "https://gbviktor.de/project/hwt-integrate-strapi-unity"
   },
   "version": "0.1.0",
-  "unity": "2019.3",
+  "unity": "2019.1",
   "description": "hwt-integrate-strapi-unity\nHow to integrate Strapi in Unity? This Package give you simple answer, use me. Sync/Async connector types.\nUse how your case want... \n operation provides an efficient async/await integration to Unity with help by UniTask, deserialization in json with Stream. \nDependencies: UniTask, add as GitURL https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-  "keywords": [ "async", "https", "network", "http", "strapi", "crud", "rest", "repository" ],
+  "keywords": [
+    "async",
+    "https",
+    "network",
+    "http",
+    "strapi",
+    "crud",
+    "rest",
+    "repository"
+  ],
   "license": "MIT",
   "category": "Task",
   "dependencies": {

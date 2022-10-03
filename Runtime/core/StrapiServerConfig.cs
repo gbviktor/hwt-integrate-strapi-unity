@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace com.gbviktor.hwtintegratestrapiunity
 {
-    [HelpURL("http://localhost:1337/admin/settings/api-tokens?sort=name:ASC")]
     [Serializable]
+    [HelpURL("http://localhost:1337/admin/settings/api-tokens")]
     public class StrapiServerConfig
     {
         [Header("Bearer ....")]
